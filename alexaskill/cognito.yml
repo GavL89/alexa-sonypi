@@ -1,0 +1,83 @@
+Resources:
+  CognitoUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: ${self:service}-${opt:stage, 'dev'}
+      AdminCreateUserConfig:
+        AllowAdminCreateUserOnly: true
+      AutoVerifiedAttributes:
+        - email
+      UsernameAttributes:
+        - email
+      Schema:
+        - 
+          Name: email
+          Required: true
+          Mutable: true
+
+  CognitoUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      UserPoolId: 
+        Ref: CognitoUserPool
+      SupportedIdentityProviders:
+        - COGNITO
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthFlows:
+        - code
+      AllowedOAuthScopes:
+        - phone
+        - email
+        - openid
+      CallbackURLs:
+        - https://alexa.amazon.co.jp/api/skill/link/M2HQJ6916EH4CR
+        - https://layla.amazon.com/api/skill/link/M2HQJ6916EH4CR
+        - https://pitangui.amazon.com/api/skill/link/M2HQJ6916EH4CR
+      LogoutURLs:
+        - https://sonytv-dev.auth.us-west-2.amazoncognito.com/logout?response_type=code
+      ReadAttributes:
+        - address
+        - birthdate
+        - email
+        - family_name
+        - gender
+        - given_name
+        - locale
+        - middle_name
+        - name
+        - nickname
+        - phone_number
+        - picture
+        - preferred_username
+        - profile
+        - updated_at
+        - website
+        - zoneinfo
+        - email_verified
+        - phone_number_verified
+      WriteAttributes:
+        - address
+        - birthdate
+        - email
+        - family_name
+        - gender
+        - given_name
+        - locale
+        - middle_name
+        - name
+        - nickname
+        - phone_number
+        - picture
+        - preferred_username
+        - profile
+        - updated_at
+        - website
+        - zoneinfo
+      GenerateSecret: true
+
+  UserPoolDomain:
+    Type: AWS::Cognito::UserPoolDomain
+    Properties: 
+      Domain: ${self:service}-${opt:stage, 'dev'}
+      UserPoolId:
+        Ref: CognitoUserPool

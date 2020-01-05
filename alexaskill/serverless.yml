@@ -1,0 +1,41 @@
+service: sonytv
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-west-2
+
+# you can add statements to the Lambda function's IAM Role here
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "iot:Publish"
+      Resource:
+        - "*"
+
+# you can define service wide environment variables here
+#  environment:
+#    variable1: value1
+
+# you can add packaging information here
+package:
+  # include:
+  #  - include-me.js
+  #  - include-me-dir/**
+  exclude:
+    - node_modules/**
+    - "modelexamples/**"
+
+functions:
+  alexaskill:
+    handler: handler.alexaskill
+    environment:
+      iotEndpoint: a22oupnhjvcdu8-ats.iot.ap-southeast-2.amazonaws.com
+      iotTopic: tv_topic
+    events:
+      - alexaSmartHome:
+          appId: amzn1.ask.skill.1aeed6a9-3957-4362-b470-921d53a0a93e
+          enabled: true
+
+resources:
+  - ${file(cognito.yml)}
