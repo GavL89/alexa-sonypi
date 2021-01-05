@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "aws-iot-device-sdk": "^2.2.1",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "sony-bravia-tv-remote-v2": "^2.0.0"
   }
 }
